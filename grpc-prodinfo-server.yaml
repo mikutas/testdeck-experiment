@@ -12,6 +12,7 @@ spec:
       labels:
         app: grpc-productinfo-server
     spec:
+      serviceAccountName: grpc-productinfo-server
       containers:
       - name: grpc-productinfo-server
         image: kasunindrasiri/grpc-productinfo-server
@@ -36,6 +37,11 @@ spec:
     name: grpc
   type: NodePort
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: grpc-productinfo-server
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -44,8 +50,14 @@ spec:
   #ttlSecondsAfterFinished: 100
   template:
     spec:
+      serviceAccountName: grpc-productinfo-server-test
       containers:
       - name: grpc-productinfo-server-test
         image: localhost:5000/grpc-productinfo-server-test:latest
         imagePullPolicy: Always
       restartPolicy: Never
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: grpc-productinfo-server-test
