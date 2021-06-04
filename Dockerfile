@@ -2,7 +2,7 @@
 
 # Build stage I : Go lang and Alpine Linux is only needed to build the program
 #FROM golang:1.11-alpine AS build
-FROM golang AS build
+FROM golang:1.15 AS build
 
 
 ENV location /go/src/github.com/grpc-up-and-running/samples/ch07/grpc-docker/go
@@ -24,7 +24,7 @@ RUN go install ./...
 
 RUN CGO_ENABLED=0 go build -o /bin/grpc-productinfo-server
 
-FROM golang AS build_test
+FROM golang:1.15 AS build_test
 ENV location /go/src/github.com/grpc-up-and-running/samples/ch07/grpc-docker/go
 WORKDIR ${location}/server
 ADD ./server ${location}/server
@@ -42,4 +42,3 @@ COPY --from=build /bin/grpc-productinfo-server /bin/grpc-productinfo-server
 
 ENTRYPOINT ["/bin/grpc-productinfo-server"]
 EXPOSE 50051
-
