@@ -24,7 +24,7 @@ const (
 	// ローカルで動かすときこちら有効化
 	//address = "localhost:50051"
 	// クラスターで動かすときこちら有効化
-	address = "productinfo:50051"
+	address = "productinfo.default:50051"
 	bufSize = 1024 * 1024
 )
 
@@ -120,12 +120,12 @@ func TestServer_AddProduct(t *testing.T) {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 		res, addProductError = c.AddProduct(ctx, &pb.Product{Name: name, Description: description, Price: price})
-		log.Printf("Res %s", res.Value)
 	}
 	test.Assert = func(t *testdeck.TD) {
 		if addProductError != nil {
 			t.Errorf("want: %v, got: %v", nil, addProductError)
 		}
+		log.Printf("Res %s", res.Value)
 	}
 
 	// Finally, call Test() to start the test
