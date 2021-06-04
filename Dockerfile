@@ -30,10 +30,15 @@ WORKDIR ${location}/server
 ADD ./server ${location}/server
 ADD ./proto-gen ${location}/proto-gen
 RUN CGO_ENABLED=0 go test -c . -o /bin/grpc-productinfo-server-test
+ARG LINKERD_AWAIT_VERSION=v0.2.3
+RUN curl -sSLo /tmp/linkerd-await https://github.com/linkerd/linkerd-await/releases/download/release%2F${LINKERD_AWAIT_VERSION}/linkerd-await-${LINKERD_AWAIT_VERSION}-amd64 && \
+    chmod 755 /tmp/linkerd-await
 
 FROM scratch AS run_test
 COPY --from=build_test /bin/grpc-productinfo-server-test /bin/grpc-productinfo-server-test
-ENTRYPOINT ["/bin/grpc-productinfo-server-test"]
+COPY --from=build_test /tmp/linkerd-await /linkerd-await
+ENTRYPOINT ["/linkerd-await", "--shutdown", "--"]
+CMD ["/bin/grpc-productinfo-server-test"]
 
 # Build stage II : Go binaries are self-contained executables.
 FROM scratch
