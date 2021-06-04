@@ -1,7 +1,7 @@
 SHELL = /usr/bin/env bash -o pipefail
 .SHELLFLAGS = -ec
 
-LOCAL_IMG ?= localhost:5000/grpc-prodinfo-server-test:latest
+LOCAL_IMG ?= localhost:5000/grpc-productinfo-server-test:latest
 
 docker-build-local:
 	docker build . -t ${LOCAL_IMG}
