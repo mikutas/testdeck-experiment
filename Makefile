@@ -4,7 +4,7 @@ SHELL = /usr/bin/env bash -o pipefail
 LOCAL_IMG ?= localhost:5000/grpc-productinfo-server-test:latest
 
 docker-build-local:
-	docker build . -t ${LOCAL_IMG}
+	docker build . -t ${LOCAL_IMG} --target run_test
 
 docker-push-local:
 	docker push ${LOCAL_IMG}
