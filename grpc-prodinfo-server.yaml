@@ -55,6 +55,9 @@ spec:
       - name: grpc-productinfo-server-test
         image: localhost:5000/grpc-productinfo-server-test:latest
         imagePullPolicy: Always
+#        env:
+#        - name: LINKERD_AWAIT_DISABLED
+#          value: "Linkerd is disabled ;("
       restartPolicy: Never
 ---
 apiVersion: v1
